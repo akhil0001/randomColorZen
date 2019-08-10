@@ -3,8 +3,8 @@
 
 import React from "react";
 
-import Base from "./components/Base";
-import Pocket from "./components/Base/Pocket";
+import Base from "./components/Base/Main";
+
 
 import "./global-css/App.css";
 
