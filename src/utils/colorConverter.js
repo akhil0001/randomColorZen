@@ -1,3 +1,4 @@
+import fontColorDecider from "./fontColorDecider";
 export default function colorCodeConverter(color) {
   //expected color is "#hex" format in a string data type
   let colorinUpperCase = color.toUpperCase();
@@ -15,6 +16,6 @@ export default function colorCodeConverter(color) {
   },1)`;
   let hex = onlyHexString;
   let _hex = `#${hex}`;
-
-  return { hex, _hex, rgb, rgba };
+  let font = fontColorDecider(colorInRGBArray);
+  return { hex, _hex, rgb, rgba, font };
 }

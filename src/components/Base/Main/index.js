@@ -29,7 +29,8 @@ class Main extends React.Component {
           _hex: "#f0f0f0",
           hex: "f0f0f0",
           rgba: "rgba(244,244,244,1)",
-          rgb: "rgb(244,244,244)"
+          rgb: "rgb(244,244,244)",
+          font: "#101010"
         }
       ],
       button: {
@@ -94,10 +95,13 @@ class Main extends React.Component {
   render() {
     const { selectedColorCode } = this.state;
     const selectedColor = this.state.colors[this.state.colors.length-1][selectedColorCode];
+    const fontColorDecided = this.state.colors[this.state.colors.length-1]['font'];
+    console.log(fontColorDecided);
     const { size, loading, msg } = this.state.button;
     return (
       <div className="container">
-        <Color color={selectedColor} />
+        <Color color={selectedColor} fontColor={fontColorDecided} />
+        
         <RadioGroup
           defaultValue="_hex"
           buttonStyle="solid"
