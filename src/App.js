@@ -3,14 +3,14 @@
 
 import React from "react";
 
-import Base from "./components/Base/Main";
+import Base from "./components/Base";
 
 
 import "./global-css/App.css";
 
 function App() {
   // return <Base />;
-  return <Pocket />;
+  return <Base />;
 }
 
 export default App;

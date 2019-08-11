@@ -2,30 +2,66 @@
 //TODO:Refactoring needed
 //TODO:
 import React from "react";
-import { Button } from "antd";
+import { Button, Radio } from "antd";
 import "antd/dist/antd.css";
 
 import Color from "./Color/index";
 import { fetchARandomColorFromHexNoop } from "../../../api/index";
 import "./index.css";
+import RadioGroup from "antd/lib/radio/group";
+
+import colorCodeConverter from "../../../utils/colorConverter";
 
 class Main extends React.Component {
   constructor(props) {
     super(props);
     this.loadingMessage = `Generating a new color`;
     this.normalMessage = `Generate a new color`;
+    this.optionsForColorCode = [
+      { value: "_hex", key: "#hex" },
+      { value: "hex", key: "hex" },
+      { value: "rgb", key: "rgb" },
+      { value: "rgba", key: "rgba" }
+    ];
     this.initialState = {
-      colors: [{ value: "#f0f0f0" }],
+      colors: [
+        {
+          _hex: "#f0f0f0",
+          hex: "f0f0f0",
+          rgba: "rgba(244,244,244,1)",
+          rgb: "rgb(244,244,244)"
+        }
+      ],
       button: {
         size: "large",
         loading: false,
         msg: this.normalMessage
-      }
+      },
+      selectedColorCode: this.optionsForColorCode[0].value
     };
     this.state = this.initialState;
   }
   componentDidMount() {
     this.fetchARandomColor();
+  }
+  renderOptionsForColorCode() {
+    const radioGroupItems = this.optionsForColorCode.map(option => {
+      return (
+        <Radio.Button
+          value={option.value}
+          key={option.key}
+          onChange={data => this.handleChangeofRadioGroup(data)}
+        >
+          {option.key}
+        </Radio.Button>
+      );
+    });
+    return radioGroupItems;
+  }
+  handleChangeofRadioGroup(data) {
+    this.setState({
+      selectedColorCode: data.target.value
+    });
   }
   fetchARandomColor() {
     let { size, loading, msg } = this.state.button;
@@ -40,8 +76,11 @@ class Main extends React.Component {
     });
     fetchARandomColorFromHexNoop()
       .then(data => {
+        let refinedColorData = colorCodeConverter(data.colors[0].value);
+        let colors = this.state.colors;
+        let newColors = colors.concat(refinedColorData);
         this.setState({
-          colors: data.colors,
+          colors: newColors,
           button: this.initialState.button
         });
       })
@@ -53,12 +92,20 @@ class Main extends React.Component {
     this.fetchARandomColor();
   }
   render() {
-    const { value } = this.state.colors[0];
+    const { selectedColorCode } = this.state;
+    const selectedColor = this.state.colors[this.state.colors.length-1][selectedColorCode];
     const { size, loading, msg } = this.state.button;
     return (
       <div className="container">
-        <h1 className="heading heading--center">Random Color Generator</h1>
-        <Color color={value} />
+        <Color color={selectedColor} />
+        <RadioGroup
+          defaultValue="_hex"
+          buttonStyle="solid"
+          className="radio-group radio-group--center"
+          size="large"
+        >
+          {this.renderOptionsForColorCode()}
+        </RadioGroup>
         <Button
           className="buttonGenerator"
           type="primary"

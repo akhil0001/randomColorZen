@@ -2,7 +2,7 @@ import React from "react";
 
 import Main from './Main/index'
 
-class base extends React.Component {
+export default class Base extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
