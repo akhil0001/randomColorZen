@@ -11,7 +11,8 @@ export default class Color extends React.Component {
     super(props);
     this.state = { color: this.props.color };
     message.config({
-      top: 100
+      top: 100,
+      duration:0.8
     });
   }
   handleClick() {
@@ -29,8 +30,10 @@ export default class Color extends React.Component {
     );
   }
   render() {
+    let backgroundColor = this.props.color;
     let colorContainerStyle = {
-      backgroundColor: this.props.color
+      backgroundColor: backgroundColor.indexOf('#')===-1 && backgroundColor.indexOf('R')===-1 ? `#${this.props.color}`:backgroundColor,
+      color:this.props.fontColor
     };
     return (
       <div
